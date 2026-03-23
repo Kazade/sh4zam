@@ -95,7 +95,7 @@ add_library(sh4zam STATIC ${SHZ_SOURCES})
 set_target_properties(sh4zam PROPERTIES
                       PUBLIC_HEADER "${SHZ_INCLUDES}")
 
-target_compile_definitions(sh4zam 
+target_compile_definitions(sh4zam
     PUBLIC
         -DSHZ_VERSION_MAJOR=${SHZ_VERSION_MAJOR}
         -DSHZ_VERSION_MINOR=${SHZ_VERSION_MINOR}

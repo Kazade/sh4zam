@@ -24,7 +24,10 @@
 #endif
 
 SHZ_FORCE_INLINE shz_vec2_t shz_vec2_init(float x, float y) SHZ_NOEXCEPT {
-    return (shz_vec2_t){ .x = x, .y = y };
+    shz_vec2_t ret;
+    ret.x = x;
+    ret.y = y;
+    return ret;
 }
 
 SHZ_FORCE_INLINE shz_vec3_t shz_vec3_init(float x, float y, float z) SHZ_NOEXCEPT {
@@ -831,4 +834,3 @@ SHZ_FORCE_INLINE shz_vec4_t shz_vec4_maxv(shz_vec4_t a, shz_vec4_t b) SHZ_NOEXCE
 }
 
  //! \endcond
- 
