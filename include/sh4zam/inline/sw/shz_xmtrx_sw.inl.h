@@ -28,7 +28,15 @@
 #include <string.h>
 #include <assert.h>
 #include <stdalign.h>
+
+#if defined(__GNUC__) && defined(__MINGW32__)
+#define thread_local __thread
+#elif defined(__PSP__)
+#define thread_local __thread
+#else
 #include <threads.h>
+#endif
+
 
 /* Internal state: 4 column vectors = 16 floats, matching shz_mat4x4_t layout */
 extern thread_local struct shz_xmtrx_{
