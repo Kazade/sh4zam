@@ -195,7 +195,7 @@ SHZ_INLINE shz_quat_t shz_quat_slerp(shz_quat_t q, shz_quat_t p, float t) SHZ_NO
     shz_quat_t q1;
     float c, phi;
 
-    if((c = shz_quat_dot(q1, p)) < 0.0f) {
+    if((c = shz_quat_dot(q, p)) < 0.0f) {
         c = -c;
         q1 = shz_quat_neg(q);
     } else q1 = q;
