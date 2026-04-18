@@ -72,7 +72,10 @@ SHZ_FORCE_INLINE shz_vec4_t shz_vec4_fill(float v) SHZ_NOEXCEPT {
  }
 
 SHZ_FORCE_INLINE shz_vec3_t shz_vec2_vec3(shz_vec2_t vec, float z) SHZ_NOEXCEPT {
-    return (shz_vec3_t){ .xy = vec, .z = z };
+    shz_vec3_t r;
+    r.xy = vec;
+    r.z = z;
+    return r;
 }
 
 SHZ_FORCE_INLINE shz_vec4_t shz_vec2_vec4(shz_vec2_t vec, float z, float w) SHZ_NOEXCEPT {
@@ -80,7 +83,10 @@ SHZ_FORCE_INLINE shz_vec4_t shz_vec2_vec4(shz_vec2_t vec, float z, float w) SHZ_
 }
 
 SHZ_FORCE_INLINE shz_vec4_t shz_vec3_vec4(shz_vec3_t vec, float w) SHZ_NOEXCEPT {
-    return (shz_vec4_t){ .xyz = vec, .w = w };
+    shz_vec4_t r;
+    r.xyz = vec;
+    r.w = w;
+    return r;
 }
 
 SHZ_FORCE_INLINE shz_vec2_t shz_vec2_add(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT {
