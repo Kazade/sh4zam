@@ -69,6 +69,7 @@ set(SHZ_INCLUDES
 
 if(PLATFORM_DREAMCAST)
     list(APPEND SHZ_INCLUDES
+         include/sh4zam/inline/sh4/shz_complex_sh4.inl.h
          include/sh4zam/inline/sh4/shz_mem_sh4.inl.h
          include/sh4zam/inline/sh4/shz_quat_sh4.inl.h
          include/sh4zam/inline/sh4/shz_scalar_sh4.inl.h
@@ -77,6 +78,7 @@ if(PLATFORM_DREAMCAST)
          include/sh4zam/inline/sh4/shz_xmtrx_sh4.inl.h)
 else()
     list(APPEND SHZ_INCLUDES
+         include/sh4zam/inline/sw/shz_complex_sw.inl.h
          include/sh4zam/inline/sw/shz_mem_sw.inl.h
          include/sh4zam/inline/sw/shz_quat_sw.inl.h
          include/sh4zam/inline/sw/shz_scalar_sw.inl.h

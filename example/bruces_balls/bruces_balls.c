@@ -19,7 +19,7 @@
     This example is written in C23.
 
     \author 2025 BruceLeet
-    \author 2025 Falco Girgis
+    \author 2025, 2026 Falco Girgis
 
     \copyright MIT License
 */
@@ -103,15 +103,13 @@ static void setup_projection_view(shz_mat4x4_t* mat) {
     
     // Preallocate the cache line containing the first 32-bytes of the matrix.
     shz_dcache_alloc_line(mat);
-    // Initialize XMTRX to an identity matrix.
-    shz_xmtrx_init_identity();
-    /* Apply a permutation matrix which swizzles the order of any vector which
-       gets transformed by it. We do this so that, given an 4D vector we are
-       transforming to submit to the GPU, shz_xmtrx_transform_vec4() produces
+    /* Initialize XMTRX to a permutation matrix which swizzles the order of any
+       vector which gets transformed by it. We do this so that, given an 4D vector
+       we are transforming to submit to the GPU, shz_xmtrx_transform_vec4() produces
        the W component first, which is what we need immediately for perspective
        division of the other components.
     */
-    shz_xmtrx_apply_permutation_wxyz();
+    shz_xmtrx_init_permutation_wxyz();
     /* Apply a screen-space transform, scaling the vertex positions to the viewport.
        
        This is because the final positions used for rendering by the PVR need to be
@@ -174,8 +172,8 @@ static void render_sphere(float radius,
     // Iterate over each Z stack that we're drawing for a given ball.
     for(unsigned stack = 0; stack < SPHERE_STACKS; stack++) {
         // Compute the angle of the current and next stacks/
-        const float stackAngle = SHZ_F_PI / 2.0f - stack * stackStep;
-        const float nextStackAngle = SHZ_F_PI / 2.0f - (stack + 1) * stackStep;
+        const float stackAngle = SHZ_F_PI_2 - stack * stackStep;
+        const float nextStackAngle = SHZ_F_PI_2 - (stack + 1) * stackStep;
         
         // Retrieve both the sin and cosine for the given angles as pairs.
         shz_sincos_t sc1 = shz_sincosf(stackAngle);
@@ -213,6 +211,11 @@ static void render_sphere(float radius,
 
             // Map a PVR vertex pointer into the SH4 store queues, so we can fill it in.
             pvr_vertex_t* vert1 = pvr_dr_target(*dr_state);
+
+            /* Prevent GCC from reordering our memory accesses in a way which causes us to access the transformed position
+               before it's ready, which would cause a pipeline stall while waiting for the transform to complete. */
+            SHZ_MEMORY_BARRIER_SOFT();
+
             /* Use a fast inversion approximation trick to QUICKLY find the inverse of our W component.
 
                WARNING: This inversion trick only will return the ABSOLUTE value, so it will have the
@@ -239,6 +242,10 @@ static void render_sphere(float radius,
 
             // Map a PVR vertex into the second store queue, so we can fill it in.
             pvr_vertex_t* vert2 = pvr_dr_target(*dr_state);
+
+            // Prevent GCC from reordering instructions beyond this boundary.
+            SHZ_MEMORY_BARRIER_SOFT();
+
             // Use fast inversion approximation on W for perspective divison.
             trans_pos2.w = shz_invf_fsrra(trans_pos2.w);
             // Perspective divide the X component and write it to the store queue
@@ -264,6 +271,10 @@ static void render_sphere(float radius,
 
             // Map a vertex pointer into the store queues so we can begin filling it in.
             pvr_vertex_t* vert1 = pvr_dr_target(*dr_state);
+
+            // Prevent GCC from reordering instructions beyond this boundary.
+            SHZ_MEMORY_BARRIER_SOFT();
+
             // Calculate inverse W for perspective division by taking the fast inverse of W.
             trans_pos1.w = shz_invf_fsrra(trans_pos1.w);
             // Store X perspective divided by W into the store queue.
@@ -283,7 +294,11 @@ static void render_sphere(float radius,
             trans_pos2 = shz_vec4_swizzle(trans_pos2, 1, 2, 3, 0);
             
             // Map a pointer to a PVR vertex into a store queue.
-            pvr_vertex_t* vert2 = pvr_dr_target(*dr_state); 
+            pvr_vertex_t* vert2 = pvr_dr_target(*dr_state);
+
+            // Prevent GCC from reordering instructions beyond this boundary.
+            SHZ_MEMORY_BARRIER_SOFT();
+
             // Signal that this is the last vertex in the triangle strip.
             vert2->flags = PVR_CMD_VERTEX_EOL;  
             // Calculate 1/W to be used for perspective division.
@@ -397,7 +412,7 @@ static void update_frame_stats(void) {
         
         // Rest our stats for the next second.
         stats.frames = 0;
-        stats.fps_timer = current_time;
+        stats.fps_timer = timer_ns_gettime64();
     }
 }
 

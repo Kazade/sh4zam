@@ -173,7 +173,7 @@ GBL_TEST_CASE_END
 
 GBL_TEST_CASE(load_4x4)
     randomize_xmtrx_();
-    shz_mat4x4_t mat4 = {
+    alignas(32) shz_mat4x4_t mat4 = {
         .left    = { -1.0f,   2.0f,  3.0f,  8.0f },
         .up      = {  4.0f,  -5.0f,  6.0f,  7.0f },
         .forward = {  7.0f,   8.0f,  9.0f, 10.0f },
@@ -518,9 +518,56 @@ GBL_TEST_CASE(init_outer_product)
 GBL_TEST_CASE_END
 
 GBL_TEST_CASE(apply_4x4)
+    alignas(32) shz::mat4x4 in;
+
+    in.init_translation(1.0f, 2.0f, 3.0f);
+    shz::xmtrx::init_scale(2.0f, 3.0f, 4.0f);
+    shz::xmtrx::apply(in);
+
+    GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
+                                {
+                                    2.0f, 0.0f, 0.0f, 2.0f,
+                                    0.0f, 3.0f, 0.0f, 6.0f,
+                                    0.0f, 0.0f, 4.0f, 12.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f
+                                }));
+
+#if SHZ_BACKEND == SHZ_SH4
+    GBL_TEST_VERIFY(
+        (benchmark_cmp<void>)(
+            "shz::xmtrx::apply", [](shz::mat4x4& m) { shz::xmtrx::apply(m); },
+            "mat_apply",         [](shz::mat4x4& m) { mat_apply((const matrix_t*)&m); },
+            in
+        )
+    );
+#endif
 GBL_TEST_CASE_END
 
 GBL_TEST_CASE(apply_unaligned_4x4)
+    alignas(32) char buffer[sizeof(shz::mat4x4) + 4];
+    auto *in = new (buffer + 4) std::array<float, 16> {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        1.0f, 2.0f, 3.0f, 1.0f
+    };
+
+    shz::xmtrx::init_scale(2.0f, 3.0f, 4.0f);
+    shz::xmtrx::apply(in->data());
+
+    GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
+                                {
+                                    2.0f, 0.0f, 0.0f, 2.0f,
+                                    0.0f, 3.0f, 0.0f, 6.0f,
+                                    0.0f, 0.0f, 4.0f, 12.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f
+                                }));
+
+#if SHZ_BACKEND == SHZ_SH4
+    (benchmark)(nullptr, "shz::xmtrx::apply_unaligned()", [](const float* m) {
+        shz::xmtrx::apply(m);
+    }, in->data());
+#endif
 GBL_TEST_CASE_END
 
 GBL_TEST_CASE(apply_transpose_4x4)
@@ -772,32 +819,26 @@ GBL_TEST_CASE(apply_rotation_quat)
 GBL_TEST_CASE_END
 
 GBL_TEST_CASE(load_apply_4x4)
-    alignas(32) std::array<std::array<float, 16>, 128> matrix1 = {{
+    alignas(32) std::array<float, 16> matrix1 = {
             1.0f, 0.0f, 0.0f, 0.0f,
             0.0f, 1.0f, 0.0f, 0.0f,
             0.0f, 0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 0.0f, 1.0f
-    }};
-    alignas(32) std::array<std::array<float, 16>, 128> matrix2 = {{
+    };
+    alignas(32) std::array<float, 16> matrix2 = {
         1.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 1.0f, 0.0f,
         1.0f, 2.0f, 3.0f, 1.0f
-    }};
+    };
     alignas(8) std::array<float, 16> out;
 
-    const shz_mat4x4_t* mat1 = reinterpret_cast<const shz_mat4x4_t*>(&matrix1[0][0]);
-    const shz_mat4x4_t* mat2 = reinterpret_cast<const shz_mat4x4_t*>(&matrix2[0][0]);
-    unsigned int count = 0;
+    const shz_mat4x4_t* mat1 = reinterpret_cast<const shz_mat4x4_t*>(matrix1.data());
+    const shz_mat4x4_t* mat2 = reinterpret_cast<const shz_mat4x4_t*>(matrix2.data());
 
     benchmark(nullptr, [&] {
-        const auto idx = count++ % 128;
-        shz_xmtrx_load_apply_4x4(reinterpret_cast<const shz::mat4x4*>(&mat1[idx]),
-                                 reinterpret_cast<const shz::mat4x4*>(&mat2[idx]));
+        shz::xmtrx::load_apply(*mat1, *mat2);
     });
-
-    shz_xmtrx_load_apply_4x4(reinterpret_cast<const shz::mat4x4*>(&mat1[0]),
-                             reinterpret_cast<const shz::mat4x4*>(&mat2[0]));
 
     shz::xmtrx::store(out.data());
     GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
@@ -807,6 +848,62 @@ GBL_TEST_CASE(load_apply_4x4)
                                     0.0f, 0.0f, 1.0f, 3.0f,
                                     0.0f, 0.0f, 0.0f, 1.0f }));
 
+GBL_TEST_CASE_END
+
+GBL_TEST_CASE(load_apply_unaligned_4x4)
+    alignas(32) char buffer1[sizeof(shz::mat4x4) + 4];
+    alignas(32) char buffer2[sizeof(shz::mat4x4) + 4];
+
+    auto* matrix1 = new (buffer1 + 4) std::array<float, 16> {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
+    auto* matrix2 = new (buffer2 + 4) std::array<float, 16> {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        1.0f, 2.0f, 3.0f, 1.0f
+    };
+    alignas(8) std::array<float, 16> out;
+
+    benchmark(nullptr, [&] {
+        shz::xmtrx::load_apply(matrix1->data(), matrix2->data());
+    });
+
+    shz::xmtrx::store(out.data());
+    GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
+                                {
+                                    1.0f, 0.0f, 0.0f, 1.0f,
+                                    0.0f, 1.0f, 0.0f, 2.0f,
+                                    0.0f, 0.0f, 1.0f, 3.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f }));
+
+GBL_TEST_CASE_END
+
+GBL_TEST_CASE(apply_store_4x4)
+    alignas(32) shz::mat4x4 in;
+    alignas(32) shz::mat4x4 out;
+
+    in.init_translation(1.0f, 2.0f, 3.0f);
+    shz::xmtrx::init_scale(2.0f, 3.0f, 4.0f);
+
+    (benchmark)(nullptr, "shz::xmtrx::apply_store",
+                [](shz::mat4x4* out, const shz::mat4x4& in) {
+                    shz::xmtrx::apply_store(out, in);
+                },
+                &out, in);
+
+    shz::xmtrx::load(out);
+
+    GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
+                                {
+                                    2.0f, 0.0f, 0.0f, 2.0f,
+                                    0.0f, 3.0f, 0.0f, 6.0f,
+                                    0.0f, 0.0f, 4.0f, 12.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f
+                                }));
 GBL_TEST_CASE_END
 
 GBL_TEST_CASE(load_apply_store_4x4)
@@ -1351,6 +1448,8 @@ GBL_TEST_REGISTER(read_write_registers,
                   apply_rotation_yxz,
                   apply_rotation_quat,
                   load_apply_4x4,
+                  load_apply_unaligned_4x4,
+                  apply_store_4x4,
                   load_apply_store_4x4,
                   load_apply_store_unaligned_4x4,
                   translate,

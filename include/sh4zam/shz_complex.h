@@ -22,7 +22,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-/*! \defgroup complex Complex Numbers
+/*! \defgroup complex Complex
     \brief    API for representing and operating on complex numbers.
 
     The complex number API serves as a replacement for C and C++'s <complex.h>,

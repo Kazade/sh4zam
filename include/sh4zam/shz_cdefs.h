@@ -73,6 +73,8 @@
 #define SHZ_FAST_MATH            __attribute__((optimize("fast-math")))
 //! Put this before a function definition to tell GCC to NOT use fast math optimizations on a specific function.
 #define SHZ_NO_FAST_MATH         __attribute__((optimize("no-fast-math")))
+//! Put this before a function definition to tell GCC to NOT unroll loops in a specific function.
+#define SHZ_NO_UNROLL_LOOPS      __attribute__((optimize("no-unroll-loops")))
 //! Tells GCC to disable any optimizations when compiling a function.
 #define SHZ_NO_OPTIMIZATION      __attribute__((optimize("O0")))
 //! Aligns a function by the size of an icache line (32 bytes).

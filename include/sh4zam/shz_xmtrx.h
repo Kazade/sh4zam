@@ -575,6 +575,44 @@ SHZ_INLINE void shz_xmtrx_load_apply_4x4(const shz_mat4x4_t* matrix1,
 SHZ_INLINE void shz_xmtrx_load_apply_unaligned_4x4(const float matrix1[16],
                                                    const float matrix2[16]) SHZ_NOEXCEPT;
 
+/*! Multiplies XMTRX by the matrix, \p in, storing the result within the matrix, \p out.
+
+    This routine is roughly equivalent to:
+        shz_xmtrx_apply_4x4(in);
+        shz_xmtrx_store_4x4(out);
+
+    However, it has been optimized and pipelined for performing the multiply and store in parallel.
+
+    \note
+    This is useful for when you want to multiply a batch of matrices by the same matrix, held within XMTRX.
+
+    \warning
+    The result of the multiplication is not stored within XMTRX, despite it getting clobbered.
+
+    \sa shz_xmtrx_apply_4x4(), shz_xmtrx_store_4x4(), shz_xmtrx_apply_store_unaligned_4x4()
+*/
+ SHZ_INLINE void shz_xmtrx_apply_store_4x4(shz_mat4x4_t* out,
+                                           const shz_mat4x4_t* in) SHZ_NOEXCEPT;
+
+/*! Multiplies XMTRX by the unaligned matrix, \p in, storing the result within the unaligned matrix, \p out.
+
+    This routine is roughly equivalent to:
+        shz_xmtrx_apply_unaligned_4x4(in);
+        shz_xmtrx_store_unaligned_4x4(out);
+
+    However, it has been optimized and pipelined for performing the multiply and store in parallel.
+
+    \note
+    This is useful for when you want to multiply a batch of matrices by the same matrix, held within XMTRX.
+
+    \warning
+    The result of the multiplication is not stored within XMTRX, despite it getting clobbered.
+
+    \sa shz_xmtrx_apply_unaligned_4x4(), shz_xmtrx_store_unaligned_4x4(), shz_xmtrx_apply_store_4x4()
+*/
+ SHZ_INLINE void shz_xmtrx_apply_store_unaligned_4x4(float out[16],
+                                                     const float in[16]) SHZ_NOEXCEPT;
+
 /*! Loads XMTRX with the 4x4 result of applying \p matrix2 onto \p matrix1, storing the result.
 
     This operation is equivalent to:

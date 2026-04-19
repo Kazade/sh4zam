@@ -32,15 +32,22 @@ namespace shz {
             @{
         */
 
-        // Default constructor.
+        //! Default constructor.
         complex() noexcept = default;
+
+        //! Default copy constructor.
+        complex(const complex& rhs) noexcept = default;
 
         //! Value constructor, sets the imaginary component to `0` if none is supplied.
         SHZ_FORCE_INLINE complex(float re, float im = 0.0f) noexcept:
             shz_complex_t({ re, im }) {}
 
         //! Converting constructor for initializing from the C base type.
-        SHZ_FORCE_INLINE complex(shz_complex_t cplx) noexcept:
+        SHZ_FORCE_INLINE complex(const shz_complex_t& cplx) noexcept:
+            complex(cplx.real, cplx.imag) {}
+
+        //! Converting constructor for initialization from a volatile value type.
+        SHZ_FORCE_INLINE complex(const volatile shz_complex_t& cplx) noexcept:
             complex(cplx.real, cplx.imag) {}
 
         //! @}
@@ -50,10 +57,22 @@ namespace shz {
             @{
         */
 
-        //! Overloaded assignment operator for assining to the C base type.
-        SHZ_FORCE_INLINE complex& operator=(shz_complex_t rhs) noexcept {
+       //! Defaulted assignment operator.
+       complex& operator=(const complex& rhs) noexcept = default;
+
+        //! Overloaded assignment operator for assigning to the C base type.
+        SHZ_FORCE_INLINE complex& operator=(const shz_complex_t& rhs) noexcept {
             real = rhs.real;
             imag = rhs.imag;
+
+            return *this;
+        }
+
+        //! Overloaded assignment operator for assigning from a volatile C base type.
+        SHZ_FORCE_INLINE volatile complex& operator=(volatile shz_complex_t rhs) volatile noexcept {
+            real = rhs.real;
+            imag = rhs.imag;
+
             return *this;
         }
 

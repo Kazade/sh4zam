@@ -37,6 +37,7 @@
 - **Matrix** types: 2x2, 3x2, 3x3, 3x4, 4x3, and 4x4
 - **Quaternion** math operations
 - **XMTRX** API for manipulating 4x4 back-bank of FP registers
+- **Complex** and imaginary math API, including accelerated FFT
 - **Miscellaneous** optimized routines
 
 # Usage

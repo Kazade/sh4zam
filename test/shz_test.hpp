@@ -50,7 +50,7 @@ SHZ_FORCE_INLINE uint64_t PERF_CNTR_STOP() {
 #endif
 
 namespace {
-    uint64_t ns_gettime64(void) noexcept {
+    inline uint64_t ns_gettime64(void) noexcept {
         timespec ts;
 
         clock_gettime(CLOCK_MONOTONIC, &ts);
@@ -64,7 +64,7 @@ std::pair<uint64_t, uint64_t> benchmark(auto res, const char* name, F &&function
 #if SHZ_BACKEND == SHZ_SH4
     perf_cntr_timer_enable();
 #endif
-    auto inner = [&]<bool CacheFlush>() SHZ_NO_INLINE SHZ_ICACHE_ALIGNED {
+    auto inner = [&]<bool CacheFlush>() SHZ_NO_INLINE SHZ_ICACHE_ALIGNED SHZ_NO_UNROLL_LOOPS {
         uint64_t tmu_sum      = 0;
         uint64_t sum          = 0;
         uint64_t prev         = 0;
@@ -77,7 +77,6 @@ std::pair<uint64_t, uint64_t> benchmark(auto res, const char* name, F &&function
 #endif
         SHZ_MEMORY_BARRIER_SOFT();
 
- #pragma GCC unroll 1
         for(iterations = 0; iterations < BENCHMARK_ITERATION_COUNT; ++iterations) {
         SHZ_MEMORY_BARRIER_SOFT();
 #if !defined(SHZ_DISABLE_BENCHMARKS) && (SHZ_BACKEND == SHZ_SH4)
@@ -96,7 +95,8 @@ std::pair<uint64_t, uint64_t> benchmark(auto res, const char* name, F &&function
             SHZ_MEMORY_BARRIER_SOFT();
 #endif
             if constexpr(!std::same_as<decltype(res), std::nullptr_t>)
-                *res = function(std::forward<Args>(args)...);
+                [[maybe_unused]] auto tmp =
+                    *res = function(std::forward<Args>(args)...);
             else
                 function(std::forward<Args>(args)...);
 
@@ -181,12 +181,28 @@ bool benchmark_cmp(const char* shzName, ShzFn&& shzFn,
     double uncacheGainz = 0.0;
 #   endif
 
-    bool gainz = (cacheGainz > 1.0f || uncacheGainz > 1.0f);
+    enum {
+        EQUAL,
+        GAINZ,
+        LOSSEZ
+    } gainz;
+    const char* gainz_str;
 
-    std::println("* [   {:6}  ]:\t{:.4f}x / {:.4f}x [UNCACHED / CACHED]", gainz? "GAINZ" : "LOSSEZ", uncacheGainz, cacheGainz);
+    if(cacheGainz > 1.0f || uncacheGainz > 1.0f) {
+        gainz = GAINZ;
+        gainz_str = "GAINZ";
+    } else if(shz_equalf(cacheGainz, 1.0f) || shz_equalf(uncacheGainz, 1.0f)) {
+        gainz = EQUAL;
+        gainz_str = "EQUAL";
+    } else {
+        gainz = LOSSEZ;
+        gainz_str = "LOSSEZ";
+    }
+
+    std::println("* [   {:6}  ]:\t{:.4f}x / {:.4f}x [UNCACHED / CACHED]", gainz_str, uncacheGainz, cacheGainz);
 
 #   if SHZ_BACKEND == SHZ_SH4
-    return gainz;
+    return gainz != LOSSEZ;
 #   else
     return true;
 #   endif

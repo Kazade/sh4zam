@@ -871,6 +871,17 @@ SHZ_FORCE_INLINE void shz_xmtrx_load_apply_unaligned_4x4_sw(const float matrix1[
     shz_xmtrx_apply_unaligned_4x4(matrix2);
 }
 
+SHZ_INLINE void shz_xmtrx_apply_store_4x4_sw(shz_mat4x4_t* out,
+                                             const shz_mat4x4_t* in) SHZ_NOEXCEPT {
+          struct shz_xmtrx_* o = (      struct shz_xmtrx_*)out;
+    const struct shz_xmtrx_* i = (const struct shz_xmtrx_*)in;
+
+    o->col[0] = shz_xmtrx_ftrv_(i->col[0]);
+    o->col[1] = shz_xmtrx_ftrv_(i->col[1]);
+    o->col[2] = shz_xmtrx_ftrv_(i->col[2]);
+    o->col[3] = shz_xmtrx_ftrv_(i->col[3]);
+}
+
 SHZ_FORCE_INLINE void shz_xmtrx_load_apply_store_unaligned_4x4_sw(float out[16],
                                                                   const float mat1[16],
                                                                   const float mat2[16]) SHZ_NOEXCEPT {
