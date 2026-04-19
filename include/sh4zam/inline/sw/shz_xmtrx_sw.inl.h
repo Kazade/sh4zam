@@ -860,20 +860,20 @@ SHZ_FORCE_INLINE void shz_xmtrx_rotate_sw(float angle, float x, float y, float z
 /* ========== Compound Operations ========== */
 
 SHZ_FORCE_INLINE void shz_xmtrx_load_apply_4x4_sw(const shz_mat4x4_t* matrix1,
-                                                    const shz_mat4x4_t* matrix2) SHZ_NOEXCEPT {
+                                                  const shz_mat4x4_t* matrix2) SHZ_NOEXCEPT {
     shz_xmtrx_load_4x4_sw(matrix1);
     shz_xmtrx_apply_4x4_sw(matrix2);
 }
 
 SHZ_FORCE_INLINE void shz_xmtrx_load_apply_unaligned_4x4_sw(const float matrix1[16],
-                                                              const float matrix2[16]) SHZ_NOEXCEPT {
+                                                            const float matrix2[16]) SHZ_NOEXCEPT {
     shz_xmtrx_load_unaligned_4x4(matrix1);
     shz_xmtrx_apply_unaligned_4x4(matrix2);
 }
 
 SHZ_FORCE_INLINE void shz_xmtrx_load_apply_store_unaligned_4x4_sw(float out[16],
-                                                                    const float mat1[16],
-                                                                    const float mat2[16]) SHZ_NOEXCEPT {
+                                                                  const float mat1[16],
+                                                                  const float mat2[16]) SHZ_NOEXCEPT {
     shz_xmtrx_load_apply_unaligned_4x4_sw(mat1, mat2);
     shz_xmtrx_store_unaligned_4x4_sw(out);
 }
@@ -926,6 +926,16 @@ SHZ_FORCE_INLINE void shz_xmtrx_negate_sw(void) SHZ_NOEXCEPT {
 SHZ_FORCE_INLINE void shz_xmtrx_abs_sw(void) SHZ_NOEXCEPT {
     for(int i = 0; i < 16; ++i)
         shz_xmtrx_state_.elem[i] = shz_fabsf(shz_xmtrx_state_.elem[i]);
+}
+
+SHZ_INLINE void shz_xmtrx_init_fft_weights_sw(float angle) SHZ_NOEXCEPT {
+    const float b = shz_sinf(angle);
+    const float a = shz_cosf(angle);
+
+    shz_xmtrx_state_.col[0] = shz_vec4_init(1.0f, 0.0f,  a,  b);
+    shz_xmtrx_state_.col[1] = shz_vec4_init(0.0f, 1.0f, -b,  a);
+    shz_xmtrx_state_.col[2] = shz_vec4_init(1.0f, 0.0f, -a, -b);
+    shz_xmtrx_state_.col[3] = shz_vec4_init(0.0f, 1.0f,  b, -a);
 }
 
 /* ========== Transformations ========== */
