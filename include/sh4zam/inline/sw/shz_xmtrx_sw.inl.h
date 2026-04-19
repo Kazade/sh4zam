@@ -882,6 +882,10 @@ SHZ_INLINE void shz_xmtrx_apply_store_4x4_sw(shz_mat4x4_t* out,
     o->col[3] = shz_xmtrx_ftrv_(i->col[3]);
 }
 
+SHZ_FORCE_INLINE void shz_xmtrx_apply_store_aligned4_4x4_sw(float out[16], const float in[16]) SHZ_NOEXCEPT {
+    shz_xmtrx_apply_store_4x4_sw((shz_mat4x4_t*)out, (const shz_mat4x4_t*)in);
+}
+
 SHZ_FORCE_INLINE void shz_xmtrx_load_apply_store_unaligned_4x4_sw(float out[16],
                                                                   const float mat1[16],
                                                                   const float mat2[16]) SHZ_NOEXCEPT {

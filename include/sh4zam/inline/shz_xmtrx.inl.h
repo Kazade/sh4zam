@@ -821,7 +821,11 @@ SHZ_FORCE_INLINE void shz_xmtrx_apply_store_4x4(shz_mat4x4_t* out,
 }
 
 SHZ_FORCE_INLINE void shz_xmtrx_apply_store_unaligned_4x4(float out[16], const float in[16]) SHZ_NOEXCEPT {
-
+#if SHZ_BACKEND == SHZ_SH4
+    shz_xmtrx_apply_store_aligned4_4x4_sh4(out, in);
+#else
+    shz_xmtrx_apply_store_aligned4_4x4_sw(out, in);
+#endif
 }
 
 SHZ_INLINE void shz_xmtrx_load_apply_store_unaligned_4x4(float out[16],

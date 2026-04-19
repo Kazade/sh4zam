@@ -906,6 +906,33 @@ GBL_TEST_CASE(apply_store_4x4)
                                 }));
 GBL_TEST_CASE_END
 
+GBL_TEST_CASE(apply_store_unaligned_4x4)
+    alignas(32) char in[sizeof(shz_mat4x4_t)];
+    alignas(32) char out[sizeof(shz_mat4x4_t)];
+
+    shz::mat4x4* i = reinterpret_cast<shz::mat4x4*>(in);
+    shz::mat4x4* o = reinterpret_cast<shz::mat4x4*>(out);
+
+    i->init_translation(1.0f, 2.0f, 3.0f);
+    shz::xmtrx::init_scale(2.0f, 3.0f, 4.0f);
+
+    (benchmark)(nullptr, "shz::xmtrx::apply_store_unaligned",
+                [](float of_[16], const float if_[16]) {
+                    shz::xmtrx::apply_store(of_, if_);
+                },
+                reinterpret_cast<float*>(o), reinterpret_cast<const float*>(i));
+
+    shz::xmtrx::load(*o);
+
+    GBL_TEST_CALL(verify_matrix(GBL_SELF_TYPE_NAME,
+                                {
+                                    2.0f, 0.0f, 0.0f, 2.0f,
+                                    0.0f, 3.0f, 0.0f, 6.0f,
+                                    0.0f, 0.0f, 4.0f, 12.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f
+                                }));
+GBL_TEST_CASE_END
+
 GBL_TEST_CASE(load_apply_store_4x4)
     union shz_glm_mat4_t {
         shz_mat4x4_t shz;
@@ -1450,6 +1477,7 @@ GBL_TEST_REGISTER(read_write_registers,
                   load_apply_4x4,
                   load_apply_unaligned_4x4,
                   apply_store_4x4,
+                  apply_store_unaligned_4x4,
                   load_apply_store_4x4,
                   load_apply_store_unaligned_4x4,
                   translate,

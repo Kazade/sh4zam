@@ -632,6 +632,66 @@ SHZ_INLINE void shz_xmtrx_apply_store_4x4_sh4(shz_mat4x4_t* out,
       "fr6", "fr7", "fr8", "fr9", "fr10", "fr11");
 }
 
+SHZ_INLINE void shz_xmtrx_apply_store_aligned4_4x4_sh4(float out[16],
+                                                       const float in[16]) SHZ_NOEXCEPT {
+    asm volatile(R"(
+        fmov.s  @%[in]+, fr0
+        add     #28, %[in]
+        pref    @%[in]
+        add     #-28, %[in]
+        fmov.s  @%[in]+, fr1
+        fmov.s  @%[in]+, fr2
+        fmov.s  @%[in]+, fr3
+        fmov.s  @%[in]+, fr4
+        fmov.s  @%[in]+, fr5
+        ftrv    xmtrx, fv0
+
+        fmov.s  @%[in]+, fr6
+        fmov.s  @%[in]+, fr7
+        pref    @%[out]
+        add     #16, %[out]
+        fmov.s  @%[in]+, fr8
+        fmov.s  @%[in]+, fr9
+        ftrv    xmtrx, fv4
+
+        fmov.s  @%[in]+, fr10
+        fmov.s  @%[in]+, fr11
+        fmov.s  fr3, @-%[out]
+        fmov.s  fr2, @-%[out]
+        fmov.s  fr1, @-%[out]
+        fmov.s  fr0, @-%[out]
+        add     #32, %[out]
+        ftrv    xmtrx, fv8
+        pref    @%[out]
+
+        fmov.s  @%[in]+, fr0
+        fmov.s  @%[in]+, fr1
+        fmov.s  @%[in]+, fr2
+        fmov.s  @%[in]+, fr3
+        fmov.s  fr7, @-%[out]
+        fmov.s  fr6, @-%[out]
+        ftrv    xmtrx, fv0
+
+        fmov.s  fr5, @-%[out]
+        fmov.s  fr4, @-%[out]
+        add     #32, %[out]
+        fmov.s  fr11, @-%[out]
+        fmov.s  fr10, @-%[out]
+        fmov.s  fr9, @-%[out]
+        fmov.s  fr8, @-%[out]
+
+        add     #32, %[out]
+        fmov.s  fr3, @-%[out]
+        fmov.s  fr2, @-%[out]
+        fmov.s  fr1, @-%[out]
+        fmov.s  fr0, @-%[out]
+    )"
+    : [out] "+r" (out), [in] "+r" (in), "=m" (*((float (*)[16])out))
+    : "m" (*((const float (*)[16])in))
+    : "fr0", "fr1", "fr2", "fr3", "fr4", "fr5",
+      "fr6", "fr7", "fr8", "fr9", "fr10", "fr11");
+}
+
 SHZ_INLINE void shz_xmtrx_load_3x4_sh4(const shz_mat3x4_t* mat) SHZ_NOEXCEPT {
     uintptr_t pref_buff = ((uintptr_t)mat + 32);
 
