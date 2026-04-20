@@ -37,7 +37,7 @@
 */
 
 //! Floating-point epsilon used with inexact FP-based comparisons.
-#define SHZ_FLT_EPSILON 0.000001f
+#define SHZ_FLT_EPSILON 0.01f
 
 SHZ_DECLS_BEGIN
 

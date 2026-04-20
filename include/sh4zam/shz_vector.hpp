@@ -48,11 +48,18 @@ struct vecN: C {
     static constexpr size_t Cols = 1;   //!< Number of columns
 
     //! Default constructor, does nothing.
-    vecN() = default;
+    vecN() noexcept = default;
+
+    //! Default copy constructor.
+    vecN(const vecN& other) noexcept = default;
 
     //! Converting constructor from existing C instance.
     SHZ_FORCE_INLINE vecN(const CType& other) noexcept:
         CType(other) {}
+
+    //! Converting constructor from existing volatile C instance.
+    SHZ_FORCE_INLINE vecN(const volatile CType& other) noexcept:
+        CType(const_cast<const CType&>(other)) {}
 
     //! Conversion operator for going from a layout-compatible vector type to a SH4ZAM vector type.
     SHZ_FORCE_INLINE static CppType from(const auto& raw) noexcept {
@@ -128,6 +135,12 @@ struct vecN: C {
     //! Overloaded unary negation operator, returns the negated vector.
     friend CppType operator-(CppType vec) noexcept {
         return vec.neg();
+    }
+
+    //! Overloaded operator for assigning to volatile reference to base C type.
+    volatile CppType& operator=(volatile CType other) volatile noexcept {
+        *static_cast<CppType*>(const_cast<vecN*>(this)) = CppType(const_cast<CType&>(other));
+        return *static_cast<volatile CppType*>(this);
     }
 
     //! Overloaded operator for adding and accumulating a vector onto another.
@@ -446,6 +459,9 @@ struct vec3: vecN<vec3, shz_vec3_t, 3> {
 
     // Unhide inherited overloaded dot product methods.
     using vecN::dot;
+
+    // Unhide inherited overloaded assignment operators.
+    using vecN::operator=;
 
     //! Default constructor: does nothing
     vec3() = default;
