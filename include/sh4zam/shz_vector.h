@@ -1030,562 +1030,232 @@ SHZ_DECLS_END
 
 #else // C++ generics (because it's too dumb to support _Generic()).
 
-#   include <concepts>
-
     //! C++ type-generic vector absolute value.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_abs(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_abs(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_abs(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_abs(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_abs(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_abs(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_abs(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_abs(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_abs(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_abs(vec); }
 
     //! C++ type-generic vector negation.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_neg(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_neg(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_neg(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_neg(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_neg(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_neg(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_neg(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_neg(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_neg(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_neg(vec); }
 
     //! C++ type-generic vector inversion.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_inv(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_inv(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_inv(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_inv(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_inv(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_inv(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_inv(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_inv(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_inv(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_inv(vec); }
 
     //! C++ type-generic vector maximum value.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_max(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_max(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_max(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_max(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE float shz_vec_max(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_max(vec); }
+    SHZ_FORCE_INLINE float shz_vec_max(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_max(vec); }
+    SHZ_FORCE_INLINE float shz_vec_max(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_max(vec); }
 
     //! C++ type-generic vector minimum value.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_min(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_min(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_min(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_min(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE float shz_vec_min(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_min(vec); }
+    SHZ_FORCE_INLINE float shz_vec_min(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_min(vec); }
+    SHZ_FORCE_INLINE float shz_vec_min(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_min(vec); }
 
     //! C++ type-generic vector clamp.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_clamp(T vec, float min, float max) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_clamp(vec, min, max);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_clamp(vec, min, max);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_clamp(vec, min, max);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_clamp(shz_vec2_t vec, float min, float max) SHZ_NOEXCEPT { return shz_vec2_clamp(vec, min, max); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_clamp(shz_vec3_t vec, float min, float max) SHZ_NOEXCEPT { return shz_vec3_clamp(vec, min, max); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_clamp(shz_vec4_t vec, float min, float max) SHZ_NOEXCEPT { return shz_vec4_clamp(vec, min, max); }
 
-    //! C++ type-generic vector equal.
-    template<typename T>
-    SHZ_FORCE_INLINE bool shz_vec_equal(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_equal(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_equal(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_equal(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic vector equality.
+    SHZ_FORCE_INLINE bool shz_vec_equal(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_equal(vec1, vec2); }
+    SHZ_FORCE_INLINE bool shz_vec_equal(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_equal(vec1, vec2); }
+    SHZ_FORCE_INLINE bool shz_vec_equal(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_equal(vec1, vec2); }
 
     //! C++ type-generic vector addition.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_add(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_add(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_add(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_add(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_add(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_add(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_add(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_add(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_add(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_add(vec1, vec2); }
 
     //! C++ type-generic vector subtraction.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_sub(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_sub(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_sub(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_sub(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_sub(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_sub(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_sub(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_sub(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_sub(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_sub(vec1, vec2); }
 
-    //! C++ type-generic multiplication of each vector component.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_mul(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_mul(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_mul(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_mul(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic component-wise multiplication.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_mul(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_mul(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_mul(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_mul(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_mul(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_mul(vec1, vec2); }
 
-    //! C++ type-generic division of each vector component.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_div(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_div(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_div(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_div(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic component-wise division.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_div(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_div(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_div(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_div(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_div(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_div(vec1, vec2); }
 
-    //! C++ type-generic uniform scaling of each vector component.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_scale(T vec, float factor) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_scale(vec, factor);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_scale(vec, factor);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_scale(vec, factor);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic uniform scaling.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_scale(shz_vec2_t vec, float factor) SHZ_NOEXCEPT { return shz_vec2_scale(vec, factor); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_scale(shz_vec3_t vec, float factor) SHZ_NOEXCEPT { return shz_vec3_scale(vec, factor); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_scale(shz_vec4_t vec, float factor) SHZ_NOEXCEPT { return shz_vec4_scale(vec, factor); }
 
-    //! C++ type-generic vector dot product operation.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_dot(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_dot(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_dot(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_dot(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic dot product.
+    SHZ_FORCE_INLINE float shz_vec_dot(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_dot(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_dot(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_dot(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_dot(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_dot(vec1, vec2); }
 
-    //! C++ type-generic vector dot product operation.
-    template<typename T>
-    SHZ_FORCE_INLINE shz_vec2_t shz_vec_dot2(T l, T r1, T r2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_dot2(l, r1, r2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_dot2(l, r1, r2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_dot2(l, r1, r2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic dual dot product.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_dot2(shz_vec2_t l, shz_vec2_t r1, shz_vec2_t r2) SHZ_NOEXCEPT { return shz_vec2_dot2(l, r1, r2); }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_dot2(shz_vec3_t l, shz_vec3_t r1, shz_vec3_t r2) SHZ_NOEXCEPT { return shz_vec3_dot2(l, r1, r2); }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_dot2(shz_vec4_t l, shz_vec4_t r1, shz_vec4_t r2) SHZ_NOEXCEPT { return shz_vec4_dot2(l, r1, r2); }
 
-    //! C++ type-generic vector dot product operation.
-    template<typename T>
-    SHZ_FORCE_INLINE shz_vec3_t shz_vec_dot3(T l, T r1, T r2, T r3) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_dot3(l, r1, r2, r3);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_dot3(l, r1, r2, r3);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_dot3(l, r1, r2, r3);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic triple dot product.
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_dot3(shz_vec2_t l, shz_vec2_t r1, shz_vec2_t r2, shz_vec2_t r3) SHZ_NOEXCEPT { return shz_vec2_dot3(l, r1, r2, r3); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_dot3(shz_vec3_t l, shz_vec3_t r1, shz_vec3_t r2, shz_vec3_t r3) SHZ_NOEXCEPT { return shz_vec3_dot3(l, r1, r2, r3); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_dot3(shz_vec4_t l, shz_vec4_t r1, shz_vec4_t r2, shz_vec4_t r3) SHZ_NOEXCEPT { return shz_vec4_dot3(l, r1, r2, r3); }
 
-    //! C++ type-generic squared magnitude of the given vector.
-    SHZ_FORCE_INLINE float shz_vec_magnitude_sqr(auto vec) SHZ_NOEXCEPT {
-        using T = decltype(vec);
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_magnitude_sqr(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_magnitude_sqr(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_magnitude_sqr(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic squared magnitude.
+    SHZ_FORCE_INLINE float shz_vec_magnitude_sqr(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_magnitude_sqr(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude_sqr(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_magnitude_sqr(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude_sqr(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_magnitude_sqr(vec); }
 
-    //! C++ type-generic magnitude of the given vector.
-    SHZ_FORCE_INLINE float shz_vec_magnitude(auto vec) SHZ_NOEXCEPT {
-        using T = decltype(vec);
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_magnitude(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_magnitude(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_magnitude(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic magnitude.
+    SHZ_FORCE_INLINE float shz_vec_magnitude(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_magnitude(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_magnitude(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_magnitude(vec); }
 
-    //! C++ type-generic inverse magnitude of the given vector.
-    SHZ_FORCE_INLINE float shz_vec_magnitude_inv(auto vec) SHZ_NOEXCEPT {
-        using T = decltype(vec);
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_magnitude_inv(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_magnitude_inv(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_magnitude_inv(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic inverse magnitude.
+    SHZ_FORCE_INLINE float shz_vec_magnitude_inv(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_magnitude_inv(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude_inv(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_magnitude_inv(vec); }
+    SHZ_FORCE_INLINE float shz_vec_magnitude_inv(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_magnitude_inv(vec); }
 
-    //! C++ type-generic vector normalization: returns normalized vector.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_normalize(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_normalize(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_normalize(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_normalize(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic vector normalization.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_normalize(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_normalize(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_normalize(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_normalize(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_normalize(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_normalize(vec); }
 
-    //! C++ type-generic safe vector normalization: returns normalized vector, avoids divide-by-zero.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_normalize_safe(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_normalize_safe(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_normalize_safe(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_normalize_safe(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic safe vector normalization, avoids divide-by-zero.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_normalize_safe(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_normalize_safe(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_normalize_safe(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_normalize_safe(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_normalize_safe(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_normalize_safe(vec); }
 
     //! C++ type-generic distance between two points.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_distance(T vec1, T vec2) SHZ_NOEXCEPT  {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_distance(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_distance(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_distance(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE float shz_vec_distance(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_distance(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_distance(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_distance(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_distance(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_distance(vec1, vec2); }
 
-    //! C++ type-generic square distance between two points.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_distance_sqr(T vec1, T vec2) SHZ_NOEXCEPT  {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_distance_sqr(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_distance_sqr(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_distance_sqr(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic squared distance between two points.
+    SHZ_FORCE_INLINE float shz_vec_distance_sqr(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_distance_sqr(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_distance_sqr(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_distance_sqr(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_distance_sqr(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_distance_sqr(vec1, vec2); }
 
-    //! C++ type-generic moving of one vector to the position of another.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_move(T vec, T target, float maxdist) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_move(vec, target, maxdist);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_move(vec, target, maxdist);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_move(vec, target, maxdist);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic moving of one vector towards another.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_move(shz_vec2_t vec, shz_vec2_t target, float maxdist) SHZ_NOEXCEPT { return shz_vec2_move(vec, target, maxdist); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_move(shz_vec3_t vec, shz_vec3_t target, float maxdist) SHZ_NOEXCEPT { return shz_vec3_move(vec, target, maxdist); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_move(shz_vec4_t vec, shz_vec4_t target, float maxdist) SHZ_NOEXCEPT { return shz_vec4_move(vec, target, maxdist); }
 
-    //! Returns the linear interpolation between the two given type-generic vectors.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_lerp(T vec1, T vec2, float t) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_lerp(vec1, vec2, t);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_lerp(vec1, vec2, t);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_lerp(vec1, vec2, t);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic linear interpolation between two vectors.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_lerp(shz_vec2_t vec1, shz_vec2_t vec2, float t) SHZ_NOEXCEPT { return shz_vec2_lerp(vec1, vec2, t); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_lerp(shz_vec3_t vec1, shz_vec3_t vec2, float t) SHZ_NOEXCEPT { return shz_vec3_lerp(vec1, vec2, t); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_lerp(shz_vec4_t vec1, shz_vec4_t vec2, float t) SHZ_NOEXCEPT { return shz_vec4_lerp(vec1, vec2, t); }
 
-    //! Type-generic reflection of a vector over the given surface normal returned.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_reflect(T incidence, T normal) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_reflect(incidence, normal);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_reflect(incidence, normal);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_reflect(incidence, normal);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic reflection of a vector over a surface normal.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_reflect(shz_vec2_t incidence, shz_vec2_t normal) SHZ_NOEXCEPT { return shz_vec2_reflect(incidence, normal); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_reflect(shz_vec3_t incidence, shz_vec3_t normal) SHZ_NOEXCEPT { return shz_vec3_reflect(incidence, normal); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_reflect(shz_vec4_t incidence, shz_vec4_t normal) SHZ_NOEXCEPT { return shz_vec4_reflect(incidence, normal); }
 
-    //! Type-generic refraction of a vector over the given surface normal returned.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_refract(T incidence, T normal, float eta) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_refract(incidence, normal, eta);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_refract(incidence, normal, eta);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_refract(incidence, normal, eta);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic refraction of a vector over a surface normal.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_refract(shz_vec2_t incidence, shz_vec2_t normal, float eta) SHZ_NOEXCEPT { return shz_vec2_refract(incidence, normal, eta); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_refract(shz_vec3_t incidence, shz_vec3_t normal, float eta) SHZ_NOEXCEPT { return shz_vec3_refract(incidence, normal, eta); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_refract(shz_vec4_t incidence, shz_vec4_t normal, float eta) SHZ_NOEXCEPT { return shz_vec4_refract(incidence, normal, eta); }
 
-    //! Type-generic cross product between the two given vectors returned.
-    template<typename T>
-    SHZ_FORCE_INLINE auto shz_vec_cross(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_cross(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_cross(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic cross product (2D returns scalar, 3D returns vector).
+    SHZ_FORCE_INLINE float      shz_vec_cross(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_cross(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_cross(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_cross(vec1, vec2); }
 
-    //! Type generic projection of the first vector onto the second vector returned.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_project(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_project(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_project(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_project(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic projection of the first vector onto the second.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_project(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_project(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_project(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_project(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_project(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_project(vec1, vec2); }
 
-    //! Type generic safe projection of \p vec1 onto \p vec2 returned, avoiding division-by-zero.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_project_safe(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_project_safe(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_project_safe(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_project_safe(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic safe projection, avoiding division-by-zero.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_project_safe(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_project_safe(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_project_safe(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_project_safe(vec1, vec2); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_project_safe(shz_vec4_t vec1, shz_vec4_t vec2) SHZ_NOEXCEPT { return shz_vec4_project_safe(vec1, vec2); }
 
-    //! Returns the angles formed by the given type-generic vector and the +X axis direction vector.
-    SHZ_FORCE_INLINE auto shz_vec_angles(auto vec) SHZ_NOEXCEPT {
-        using T = decltype(vec);
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_angle(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_angles(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic angles from the +X axis (2D returns float, 3D returns vec2).
+    SHZ_FORCE_INLINE float      shz_vec_angles(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_angle(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_angles(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_angles(vec); }
 
-    //! Returns the angles formed between the given two type-generic vectors.
-    template<typename T>
-    SHZ_FORCE_INLINE float shz_vec_angle_between(T vec1, T vec2) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_angle_between(vec1, vec2);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_angle_between(vec1, vec2);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic angle between two vectors.
+    SHZ_FORCE_INLINE float shz_vec_angle_between(shz_vec2_t vec1, shz_vec2_t vec2) SHZ_NOEXCEPT { return shz_vec2_angle_between(vec1, vec2); }
+    SHZ_FORCE_INLINE float shz_vec_angle_between(shz_vec3_t vec1, shz_vec3_t vec2) SHZ_NOEXCEPT { return shz_vec3_angle_between(vec1, vec2); }
 
-    //! Overloaded generic swizzle function for 2D vectors.
+    //! C++ type-generic swizzle.
     SHZ_FORCE_INLINE shz_vec2_t shz_vec_swizzle(shz_vec2_t vec, unsigned x_idx, unsigned y_idx) SHZ_NOEXCEPT {
         return shz_vec2_swizzle(vec, x_idx, y_idx);
     }
-
-    //! Overloaded generic swizzle function for 3D vectors.
     SHZ_FORCE_INLINE shz_vec3_t shz_vec_swizzle(shz_vec3_t vec, unsigned x_idx, unsigned y_idx, unsigned z_idx) SHZ_NOEXCEPT {
         return shz_vec3_swizzle(vec, x_idx, y_idx, z_idx);
     }
-
-    //! Overloaded generic swizzle function for 3D vectors.
     SHZ_FORCE_INLINE shz_vec4_t shz_vec_swizzle(shz_vec4_t vec, unsigned x_idx, unsigned y_idx, unsigned z_idx, unsigned w_idx) SHZ_NOEXCEPT {
         return shz_vec4_swizzle(vec, x_idx, y_idx, z_idx, w_idx);
     }
 
     //! C++ type-generic component-wise floor.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_floor(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_floor(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_floor(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_floor(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_floor(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_floor(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_floor(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_floor(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_floor(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_floor(vec); }
 
     //! C++ type-generic component-wise ceil.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_ceil(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_ceil(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_ceil(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_ceil(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_ceil(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_ceil(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_ceil(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_ceil(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_ceil(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_ceil(vec); }
 
     //! C++ type-generic component-wise round.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_round(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_round(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_round(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_round(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_round(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_round(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_round(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_round(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_round(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_round(vec); }
 
     //! C++ type-generic component-wise fract.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_fract(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_fract(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_fract(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_fract(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_fract(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_fract(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_fract(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_fract(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_fract(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_fract(vec); }
 
     //! C++ type-generic component-wise sign.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_sign(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_sign(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_sign(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_sign(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_sign(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_sign(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_sign(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_sign(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_sign(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_sign(vec); }
 
     //! C++ type-generic component-wise saturate.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_saturate(T vec) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_saturate(vec);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_saturate(vec);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_saturate(vec);
-        else static_assert(false, "Incompatible type!");
-    }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_saturate(shz_vec2_t vec) SHZ_NOEXCEPT { return shz_vec2_saturate(vec); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_saturate(shz_vec3_t vec) SHZ_NOEXCEPT { return shz_vec3_saturate(vec); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_saturate(shz_vec4_t vec) SHZ_NOEXCEPT { return shz_vec4_saturate(vec); }
 
-    //! C++ type-generic pairwise minimum.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_minv(T a, T b) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_minv(a, b);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_minv(a, b);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_minv(a, b);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic component-wise minimum.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_minv(shz_vec2_t a, shz_vec2_t b) SHZ_NOEXCEPT { return shz_vec2_minv(a, b); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_minv(shz_vec3_t a, shz_vec3_t b) SHZ_NOEXCEPT { return shz_vec3_minv(a, b); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_minv(shz_vec4_t a, shz_vec4_t b) SHZ_NOEXCEPT { return shz_vec4_minv(a, b); }
 
-    //! C++ type-generic pairwise maximum.
-    template<typename T>
-    SHZ_FORCE_INLINE T shz_vec_maxv(T a, T b) SHZ_NOEXCEPT {
-        if constexpr(std::convertible_to<T, shz_vec2_t>)
-            return shz_vec2_maxv(a, b);
-        else if constexpr(std::convertible_to<T, shz_vec3_t>)
-            return shz_vec3_maxv(a, b);
-        else if constexpr(std::convertible_to<T, shz_vec4_t>)
-            return shz_vec4_maxv(a, b);
-        else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic component-wise maximum.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_maxv(shz_vec2_t a, shz_vec2_t b) SHZ_NOEXCEPT { return shz_vec2_maxv(a, b); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_maxv(shz_vec3_t a, shz_vec3_t b) SHZ_NOEXCEPT { return shz_vec3_maxv(a, b); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_maxv(shz_vec4_t a, shz_vec4_t b) SHZ_NOEXCEPT { return shz_vec4_maxv(a, b); }
 
-    //! Compares each component of the vector to the edge. 0 returned in that component if x[i] < edge. Otherwise the component is 1.
-    template<typename V, typename T>
-    SHZ_FORCE_INLINE V shz_vec_step(V vec, T edge) SHZ_NOEXCEPT {
-        constexpr bool scalar = std::is_same_v<T, float>;
-        constexpr bool vector = std::is_same_v<T, V>;
+    //! C++ type-generic step: 0 per component if vec[i] < edge, else 1.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_step(shz_vec2_t vec, float       edge) SHZ_NOEXCEPT { return shz_vec2_step (vec, edge); }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_step(shz_vec2_t vec, shz_vec2_t  edge) SHZ_NOEXCEPT { return shz_vec2_stepv(vec, edge); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_step(shz_vec3_t vec, float       edge) SHZ_NOEXCEPT { return shz_vec3_step (vec, edge); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_step(shz_vec3_t vec, shz_vec3_t  edge) SHZ_NOEXCEPT { return shz_vec3_stepv(vec, edge); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_step(shz_vec4_t vec, float       edge) SHZ_NOEXCEPT { return shz_vec4_step (vec, edge); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_step(shz_vec4_t vec, shz_vec4_t  edge) SHZ_NOEXCEPT { return shz_vec4_stepv(vec, edge); }
 
-        static_assert(scalar || vector, "Incompatible type!");
+    //! C++ type-generic smoothstep: 0 at/below edge0, 1 at/above edge1, smooth in-between. Undefined for edge0 > edge1.
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_smoothstep(shz_vec2_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec2_smoothstep (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_smoothstep(shz_vec2_t vec, shz_vec2_t  edge0, shz_vec2_t  edge1) SHZ_NOEXCEPT { return shz_vec2_smoothstepv(vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_smoothstep(shz_vec3_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec3_smoothstep (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_smoothstep(shz_vec3_t vec, shz_vec3_t  edge0, shz_vec3_t  edge1) SHZ_NOEXCEPT { return shz_vec3_smoothstepv(vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_smoothstep(shz_vec4_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec4_smoothstep (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_smoothstep(shz_vec4_t vec, shz_vec4_t  edge0, shz_vec4_t  edge1) SHZ_NOEXCEPT { return shz_vec4_smoothstepv(vec, edge0, edge1); }
 
-        if constexpr(std::convertible_to<V, shz_vec2_t>) {
-            if constexpr(scalar)
-                return shz_vec2_step(vec, edge);
-            else
-                return shz_vec2_stepv(vec, edge);
-        } else if constexpr(std::convertible_to<V, shz_vec3_t>) {
-            if constexpr(scalar)
-                return shz_vec3_step(vec, edge);
-            else
-                return shz_vec3_stepv(vec, edge);
-        } else if constexpr(std::convertible_to<V, shz_vec4_t>) {
-            if constexpr(scalar)
-                return shz_vec4_step(vec, edge);
-            else
-                return shz_vec4_stepv(vec, edge);
-        } else static_assert(false, "Incompatible type!");
-    }
-
-    //! Returns 0.0f at/below edge0, 1.0f at/above edge1, smoothly varying in-between. Undefined for \p edge0 > \p edge1
-    template<typename V, typename T>
-    SHZ_FORCE_INLINE V shz_vec_smoothstep(V vec, T edge0, T edge1) SHZ_NOEXCEPT {
-        constexpr bool scalar = std::is_same_v<T, float>;
-        constexpr bool vector = std::is_same_v<T, V>;
-
-        static_assert(scalar || vector, "Incompatible type!");
-
-        if constexpr (std::convertible_to<V, shz_vec2_t>) {
-            if constexpr (scalar)
-                return shz_vec2_smoothstep(vec, edge0, edge1);
-            else
-                return shz_vec2_smoothstepv(vec, edge0, edge1);
-        } else if constexpr (std::convertible_to<V, shz_vec3_t>) {
-            if constexpr (scalar)
-                return shz_vec3_smoothstep(vec, edge0, edge1);
-            else
-                return shz_vec3_smoothstepv(vec, edge0, edge1);
-        } else if constexpr (std::convertible_to<V, shz_vec4_t>) {
-            if constexpr (scalar)
-                return shz_vec4_smoothstep(vec, edge0, edge1);
-            else
-                return shz_vec4_smoothstepv(vec, edge0, edge1);
-        } else static_assert(false, "Incompatible type!");
-    }
-
-    //! Returns 0.0f at/below edge0, 1.0f at/above edge1, smoothly varying in-between. Accepts inverse edges.
-    template<typename V, typename T>
-    SHZ_FORCE_INLINE V shz_vec_smoothstep_safe(V vec, T edge0, T edge1) SHZ_NOEXCEPT {
-        constexpr bool scalar = std::is_same_v<T, float>;
-        constexpr bool vector = std::is_same_v<T, V>;
-
-        static_assert(scalar || vector, "Incompatible type!");
-
-        if constexpr (std::convertible_to<V, shz_vec2_t>) {
-            if constexpr (scalar)
-                return shz_vec2_smoothstep_safe(vec, edge0, edge1);
-            else
-                return shz_vec2_smoothstepv_safe(vec, edge0, edge1);
-        } else if constexpr (std::convertible_to<V, shz_vec3_t>) {
-            if constexpr (scalar)
-                return shz_vec3_smoothstep_safe(vec, edge0, edge1);
-            else
-                return shz_vec3_smoothstepv_safe(vec, edge0, edge1);
-        } else if constexpr (std::convertible_to<V, shz_vec4_t>) {
-            if constexpr (scalar)
-                return shz_vec4_smoothstep_safe(vec, edge0, edge1);
-            else
-                return shz_vec4_smoothstepv_safe(vec, edge0, edge1);
-        } else static_assert(false, "Incompatible type!");
-    }
+    //! C++ type-generic smoothstep with safe edge ordering (accepts edge0 > edge1).
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_smoothstep_safe(shz_vec2_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec2_smoothstep_safe (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec2_t shz_vec_smoothstep_safe(shz_vec2_t vec, shz_vec2_t  edge0, shz_vec2_t  edge1) SHZ_NOEXCEPT { return shz_vec2_smoothstepv_safe(vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_smoothstep_safe(shz_vec3_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec3_smoothstep_safe (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec3_t shz_vec_smoothstep_safe(shz_vec3_t vec, shz_vec3_t  edge0, shz_vec3_t  edge1) SHZ_NOEXCEPT { return shz_vec3_smoothstepv_safe(vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_smoothstep_safe(shz_vec4_t vec, float       edge0, float       edge1) SHZ_NOEXCEPT { return shz_vec4_smoothstep_safe (vec, edge0, edge1); }
+    SHZ_FORCE_INLINE shz_vec4_t shz_vec_smoothstep_safe(shz_vec4_t vec, shz_vec4_t  edge0, shz_vec4_t  edge1) SHZ_NOEXCEPT { return shz_vec4_smoothstepv_safe(vec, edge0, edge1); }
 
 #endif
 
