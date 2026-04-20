@@ -1,7 +1,11 @@
 #include "sh4zam/shz_xmtrx.h"
 #include "sh4zam/shz_matrix.h"
 
-thread_local struct shz_xmtrx_ shz_xmtrx_state_;
+SHZ_TLS_DECL(shz_xmtrx__t, xmtrx_state_, { 0 });
+
+shz_xmtrx__t* shz_xmtrx_state_(void) {
+    return SHZ_TLS_REF(xmtrx_state_);
+}
 
 void shz_xmtrx_load_apply_store_4x4_sw(shz_mat4x4_t* out,
                                        const shz_mat4x4_t* matrix1,

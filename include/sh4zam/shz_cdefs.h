@@ -3,6 +3,7 @@
  *
  *  This file contains commonly used preprocessor definitions used throughout
  *  the project:
+ *      - Library-wide configuration defines
  *      - Compiler attributes
  *      - Miscellaneous utilities
  *
@@ -20,19 +21,44 @@
 #   include <type_traits>
 #endif
 
-#define SHZ_SH4   1
-#define SHZ_PPC   2
-#define SHZ_MIPS  3
-#define SHZ_ARM   4
-#define SHZ_X86   5
-#define SHZ_WASM  8
-#define SHZ_SW    ~0
+/*! \name  Back-Ends
+    \brief Platform-specific SH4ZAM implementations.
+    @{
+*/
+#define SHZ_SH4   1     //!< Back-end for the Dreamcast's SH4.
+#define SHZ_PPC   2     //!< Back-end for the Gamecube/Wii's Gekko PPC.
+#define SHZ_MIPS  3     //!< Back-end for MIPS architectures
+#define SHZ_ARM   4     //!< Back-end for ARM architectures.
+#define SHZ_X86   5     //!< Back-end for x86/64 architectures.
+#define SHZ_WASM  8     //!< Back-end for WebAssembly.
+#define SHZ_SW    ~0    //!< Generic C-based software back-end.
+//! @}
 
+// Attempt to detect default back-end for the given build environment.
 #ifndef SHZ_BACKEND
 #   ifdef __DREAMCAST__
-#       define SHZ_BACKEND SHZ_SH4
+#       define SHZ_BACKEND SHZ_SH4  // Dreamcast builds use SH4 back-end.
 #   else
-#       define SHZ_BACKEND SHZ_SW
+#       define SHZ_BACKEND SHZ_SW   // Everything else uses SW C back-end.
+#   endif
+#endif
+
+/*! \name  TLS Models
+    \brief Defines for different mechanisms for thread-local storage.
+    @{
+*/
+#define SHZ_TLS_DISABLED    0   //!< No thread-local variables.
+#define SHZ_TLS_IMPLICIT    1   //!< Use `thread_local` keyword for TLS.
+#define SHZ_TLS_PTHREAD     2   //!< Use pthread unique keys for TLS.
+#define SHZ_TLS_CTHREAD     3   //!< Use C11 thread TSS keys for TLS.
+//! @}
+
+// Attempt to detect default TLS model for the given back-end.
+#ifndef SHZ_TLS_MODEL
+#   if SHZ_BACKEND == SHZ_SH4
+#       define SHZ_TLS_MODEL    SHZ_TLS_IMPLICIT    // SH4 back-end supports compiler-level TLS.
+#   elif SHZ_BACKEND == SHZ_SW
+#       define SHZ_TLS_MODEL    SHZ_TLS_IMPLICIT    // SW back-end uses pthread-based TLS for compatibilty.
 #   endif
 #endif
 
@@ -57,7 +83,7 @@
 //! @}
 
 //! \cond
-/*! \name Compiler attributes
+/*! \name  Compiler attributes
  *  \brief Defines for commonly-used GCC attributes.
  *  @{
  */
@@ -157,6 +183,77 @@
 #endif
 //! @}
 //! \endcond
+
+/*! \name TLS Utilities
+    \brief Macros for declaring and managing thread-local variables.
+    @{
+*/
+#if SHZ_TLS_MODEL == SHZ_TLS_DISABLED
+//! Declares a TLS variable with disabled model (so not thread-local).
+#   define SHZ_TLS_DECL(type, name, ...) static type name = __VA_ARGS__
+//! References a TLS variable, with disabled model.
+#   define SHZ_TLS_REF(name)             (&name)
+#elif SHZ_TLS_MODEL == SHZ_TLS_IMPLICIT
+#   include <threads.h>
+//! Declares a TLS variable with compiler-driven implicit TLS model.
+#   define SHZ_TLS_DECL(type, name, ...) static thread_local type name = __VA_ARGS__
+//! References a TLS variable with compiler-driven implicit TLS model.
+#   define SHZ_TLS_REF(name)             (&name)
+#elif SHZ_TLS_MODEL == SHZ_TLS_PTHREAD
+#   include <pthread.h>
+#   include <stdlib.h>
+//! Declares a TLS variable using pthread thread-specific data.
+#   define SHZ_TLS_DECL(type, name, ...) \
+        static pthread_key_t name; \
+        static void tls_##name##_init_(void) { \
+            int res = pthread_key_create(&name, free); \
+            (void)res; assert(!res); \
+        } \
+        static type* tls_##name##_ref_(void) { \
+            static pthread_once_t once_ctrl = PTHREAD_ONCE_INIT; \
+            int ret = pthread_once(&once_ctrl, tls_##name##_init_); \
+            (void)ret; assert(!ret); \
+            type* ptr = pthread_getspecific(name); \
+            if(!ptr) { \
+                ptr = (type *)malloc(sizeof(type)); \
+                assert(ptr); \
+                type temp = __VA_ARGS__; \
+                memcpy(ptr, &temp, sizeof(type)); \
+                ret = pthread_setspecific(name, ptr); \
+                assert(!ret); \
+            } \
+            return ptr; \
+        }
+//! References a TLS variable using pthread thread-specific data.
+#   define SHZ_TLS_REF(name) tls_##name##_ref_()
+#elif SHZ_TLS_MODEL == SHZ_TLS_CTHREAD
+#   include <threads.h>
+#   include <stdlib.h>
+//! Declares a TLS variable using C11 thread-specific storage.
+#   define SHZ_TLS_DECL(type, name, ...) \
+        static tss_t name; \
+        static void tls_##name##_init_(void) { \
+            int res = tss_create(&name, free); \
+            (void)res; assert(res == thrd_success); \
+        } \
+        static type* tls_##name##_ref_(void) { \
+            static once_flag once_ctrl = ONCE_FLAG_INIT; \
+            call_once(&once_ctrl, tls_##name##_init_); \
+            type* ptr = (type *)tss_get(name); \
+            if(!ptr) { \
+                ptr = (type *)malloc(sizeof(type)); \
+                assert(ptr); \
+                type temp = __VA_ARGS__; \
+                memcpy(ptr, &temp, sizeof(type)); \
+                int res = tss_set(name, ptr); \
+                (void)res; assert(res == thrd_success); \
+            } \
+            return ptr; \
+        }
+//! References a TLS variable using C11 thread-specific storage.
+#   define SHZ_TLS_REF(name) tls_##name##_ref_()
+#endif
+//! @}
 
 /*! \name  Aliasing Types
  *  \brief Types which may break C/C++'s strict aliasing rules
